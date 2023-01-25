@@ -1,0 +1,79 @@
+---
+- name: This play demonstrates how to use most common modules.
+  hosts: all
+  tasks:
+    - name: This is COPY module
+      ansible.builtin.copy:
+        src: src/index.html
+        dest: /tmp/index.html
+        owner: devops
+        mode: 0640
+        group: student
+
+    - name: FILE module to create directory
+      ansible.builtin.file:
+        path: /src/app
+        state: directory
+        owner: devops
+        group: devops
+        mode: 0755
+        recurse: yes
+
+    - name: FILE module to create link
+      ansible.builtin.file:
+        path: /src/app/demolink
+        state: link
+        src: /var/log/
+        owner: devops
+        
+    - name: SYNCHRONIZE module to sync content
+      ansible.posix.synchronize:
+        src: /home/student/DAY-2
+        dest: /tmp/synctest
+
+    - name: LINEINFILE module to edit file content
+      ansible.builtin.lineinfile:
+        path: /tmp/index.html
+        regexp: '^Greetings'
+        line: 'Hello Everyone'
+        owner: devops
+        mode: 0644
+
+    - name: PACKAGE module to install/remove/upgrade packages
+      ansible.builtin.package:
+        name: httpd
+        state: latest
+        #enablerepo: reponame
+        #disablerepo: reponame1
+        
+    - name: SERVICE module to start/restart/stop/enable/disable system services
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: true
+
+    - name: USER module to create/delete/modify user account
+      ansible.builtin.user:
+        name: john
+        state: present
+        comment: "John user Account"
+        uid: 3004
+        shell: /bin/bash
+        group: devops
+        append: yes
+
+    - name: GET_URL module to download files over HTTP,HTTPs or FTP
+      ansible.builtin.get_url:
+        url: http://classroom.example.com/index.html
+        dest: /var/www/html/index.html
+        mode: 0644
+        owner: devops
+        group: devops
+
+    - name: FIREWALLD module to enable/disable services & ports
+      ansible.posix.firewalld:
+        service: http
+        permanent: true
+        state: enabled
+        immediate: yes
+

@@ -1,0 +1,24 @@
+- name: Demo Facts
+  hosts: all 
+  gather_facts: false
+  tasks:
+    - name: facts.d dir exists
+      file:
+        path: "/etc/ansible/facts.d"
+        state: directory
+
+    - name: copy facts file
+      copy:
+        src: demofacts/dynfact.fact
+        dest: /etc/ansible/facts.d/dynfact.fact
+        mode: 0755
+
+    - name: I am gathering facts now
+      setup:
+        gather_subset:
+          - network
+
+    - name: List all facts
+      debug:
+        var: ansible_facts
+

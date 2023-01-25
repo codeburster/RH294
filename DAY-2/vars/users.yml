@@ -1,0 +1,8 @@
+users:
+  - name: bob
+    group: devops
+    uid: 2089
+
+  - name: john
+    group: admins
+    uid: 8623

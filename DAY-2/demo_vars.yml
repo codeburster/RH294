@@ -1,0 +1,22 @@
+- name: Demo Variables
+  hosts: all
+  vars_files:
+    - vars/myvars.yml
+    - vars/morevars.yml
+    - vars/secretdata.yml
+
+  #vars:
+  #  pkg: mariadb
+
+  tasks:
+    - name: Ensure pakage {{ pkg }} is installed
+      debug:
+        msg: "{{ pkg }}"
+
+    - name: Ensure user {{ myusers }} exists
+      debug:
+        msg: "{{ myusers }}"
+
+    - name: Learning to use secrets
+      debug:
+        msg: password is {{ password }} and git token is {{ gittoken }}.
