@@ -1,0 +1,23 @@
+{# This is a Comment #}
+
+Learning Templates in Ansible.
+
+Host Name : {{ ansible_fqdn }}
+IP Address : {{ ansible_default_ipv4.address }}
+Owner : {{ Machine_Owner }}
+
+
+Printing all users here :
+
+{% for user in users %}
+    {% if not user == "natasha" %}
+      {{ user }}
+    {% else %}
+      else executed
+   
+    {% endif %}
+
+  This is outside if code block.
+{% endfor %}
+
+Not part of loop

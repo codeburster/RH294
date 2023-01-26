@@ -1,0 +1,48 @@
+---
+- name: Learn how to use handlers.
+  hosts: servera.lab.example.com
+  #force_handlers: yes
+  vars:
+    pkg: httpd
+    svc: httpd
+  tasks:
+    - name: Install httpd Package
+      package:
+        name: "{{ pkg }}"
+        state: present
+
+    - name: Copy config file
+      copy:
+        src: files/web1.conf
+        dest: /tmp/web1.conf
+      notify:
+        - handler task 2
+        - Restart webservice
+
+    - name: This task always fails
+      copy:
+        src: "Failed"
+        dest: doesnotexists
+      ignore_errors: yes
+
+    - name: execute some shell script
+      command: systemctl is-active httpd
+      register: res
+      changed_when: res.rc != 0
+
+    - debug:
+        var: res
+    - name: other tasks
+      debug:
+        msg: "Web Server Configured"
+      changed_when: True
+
+  handlers:
+    - name: Restart webservice
+      service:
+        name: "{{ svc }}"
+        state: restarted
+
+    - name: handler task 2
+      debug:
+        msg: handler task 2 executed

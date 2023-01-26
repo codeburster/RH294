@@ -1,0 +1,14 @@
+- name: Learning Templates
+  hosts: alias*
+  vars_files:
+    - vars/myusers.yml
+  vars:
+    Machine_Owner: "msachan@redhat.com"
+  tasks:
+    - name: deploy motd template
+      template:
+        src: templates/motd.j2
+        dest: /etc/motd
+        mode: 0644
+        owner: root
+        group: root

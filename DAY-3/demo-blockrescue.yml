@@ -1,0 +1,42 @@
+---
+- name: Learn how to use handlers.
+  hosts: servera.lab.example.com
+  vars:
+    pkg: httpd
+    svc: httpd
+  tasks:
+    - name: This is a block rescue example
+      block:
+        - name: upgrade db
+          debug:
+            msg: UPGRDAE DB in Progress
+
+        - name: upgrade db
+          debug:
+            msg: UPGRDAE DB in Progress
+          #failed_when: True
+
+        - name: upgrade db
+          debug:
+            msg: one more task
+      
+      rescue:
+        - name: Rollback Database
+          debug:
+            msg: rollback done
+          #failed_when: True
+
+      always:
+        - name: this is outside block-rescue
+          debug:
+            msg: do something
+          #failed_when: True
+
+        - name: this is outside block-rescue
+          debug:
+            msg: do something
+      when: False
+
+    - name: task outside block-rescue-always
+      debug:
+        msg: something

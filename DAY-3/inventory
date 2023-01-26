@@ -1,0 +1,17 @@
+alias.srv.example.com
+
+[webservers]
+servera.lab.example.com
+web1.example.com
+weba.example.com
+dummy.example.com
+
+[dbservers]
+serverb.lab.example.com
+db1.example.com
+db2.example.com
+dummy.example.com
+
+[myservers:children]
+webservers
+dbservers

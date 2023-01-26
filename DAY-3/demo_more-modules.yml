@@ -1,0 +1,21 @@
+- hosts: servera.lab.example.com
+  tasks:
+    - ansible.builtin.stat:
+        path: /etc/hosts
+      register: res
+
+    - debug:
+        var: res
+
+    - ansible.builtin.blockinfile:
+        path: /tmp/index.html
+        block: |
+          First Line
+          Second Line
+          Third Line
+        state: present
+
+    - fetch:
+        src: /home/student/myfile.dat
+        dest: /tmp
+      
