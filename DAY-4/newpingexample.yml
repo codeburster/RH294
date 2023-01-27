@@ -1,0 +1,5 @@
+- hosts: servera.*
+  tasks:
+    - name: bew ping custom module
+      gls.utils.newping:
+        data: hello

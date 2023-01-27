@@ -1,0 +1,14 @@
+---
+- name: Learning to use roles in play
+  hosts: serverc.*
+  post_tasks:
+    - name: This is post task
+      debug:
+        msg: I execute at the end always
+  pre_tasks:
+    - name: Print pkg var
+      debug:
+        var: pkg
+  roles:
+    - role: motd
+      pkg: nfs-server

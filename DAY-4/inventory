@@ -1,0 +1,12 @@
+[webservers]
+server[a:d].lab.example.com
+
+
+[dbservers]
+serverb.lab.example.com
+
+[webservers:vars]
+myusers=webadmin
+
+[dbservers:vars]
+myusers=mysqladmin

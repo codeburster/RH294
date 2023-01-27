@@ -1,0 +1,17 @@
+---
+- name: demo network role
+  hosts: serverb.*
+  roles:
+    - redhat.rhel_system_roles.network
+
+  vars:
+    network_connections:
+      - name: eth1
+        type: ethernet
+        ip:
+          address: 172.25.250.167/24
+          gateway4: 172.25.254.254
+          dhcp4: no
+          dns:
+            - 8.8.8.8
+            - 172.25.250.254

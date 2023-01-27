@@ -1,0 +1,32 @@
+---
+- name: Some more modules
+  hosts: servera.*
+  tasks:
+    - name: Schedule job with at
+      ansible.posix.at:
+        command: userdel -r tempuser
+        count: 20
+        units: minutes
+        unique: yes
+
+    - name: Schedule job using cron
+      ansible.builtin.cron:
+        name: Backup my home directory
+        user: devops_user
+        job: /usr/bin/echo "backup done"
+        minute: 0
+        hour: 16
+        weekday: 5
+
+    - name: Disable dnf makecache
+      ansible.builtin.systemd:
+        name: dnf-makecache.timer
+        state: stopped
+        enabled: no
+
+    - name: Reboot, shorten timeout
+      ansible.builtin.reboot:
+        reboot_timeout: 180
+        msg: Machine will be rebooted in 180 seconds. Save your work.
+
+

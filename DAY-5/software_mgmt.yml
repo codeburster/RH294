@@ -1,0 +1,58 @@
+---
+- name: Some more Modules
+  hosts: servera.*
+  tasks:
+    - name: Upgrade all packages
+      ansible.builtin.dnf:
+        name: '*'
+        state: latest
+      ignore_errors: yes
+    
+    # Collection info about installed packages
+    - name: Gather info on installed packages
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: List installed packages
+      ansible.builtin.debug:
+        var: ansible_facts['packages']
+
+    - name: Display NetworkManager version
+      ansible.builtin.debug:
+        msg: "Version {{ ansible_facts['packages']['NetworkManager'][0]['version'] }}"
+      when: "'NetworkManager' in ansible_facts['packages']"
+
+    # Managing Subscription via Ansible
+    #- name: Register and subscribe the system
+    #  community.general.redhat_subscription:
+    #    username: harry
+    #    password: test
+    #    pool_ids: poolID
+    #    state: present
+
+    #- name: Enable Red Hat repositories
+    #  community.general.rhsm_repository:
+    #    name:
+    #      - rhel-9-for-x86_64-baseos-rpms
+    #      - rhel-9-for-x86_64-appstream-rpms
+    #    state: present
+
+    - name: Deploy the GPG public key
+      ansible.builtin.rpm_key:
+        key: http://materials.example.com/yum/repository/RPM-GPG-KEY-example
+        state: present
+      register: testvar
+      ignore_errors: yes
+
+    - debug:
+        var: testvar
+
+    - name: Ensure Example Repo exists
+      ansible.builtin.yum_repository:
+        file: example
+        name: example-internal
+        description: Example Inc. Internal YUM/DNF repo
+        baseurl: http://materials.example.com/yum/repository/
+        enabled: yes
+        gpgcheck: yes
+        state: present

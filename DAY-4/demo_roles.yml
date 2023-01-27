@@ -1,0 +1,18 @@
+---
+- name: Learning to use roles
+  hosts: servera.lab.example.com
+  tasks:
+    - name: this is task1
+      debug:
+        msg: "not in the role {{ pkg }}"
+      ignore_errors: yes
+
+    - name: add role here
+      import_role:
+        name: motd
+      vars:
+        pkg: vsftpd
+
+    - name: print vars
+      debug:
+        var: pkg

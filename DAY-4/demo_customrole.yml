@@ -1,0 +1,7 @@
+---
+- name: bash_env role
+  hosts: servera.*
+  vars:
+    default_prompt: '[\u is logged in on \h ] \$ '
+  roles:
+    - student.bash_env

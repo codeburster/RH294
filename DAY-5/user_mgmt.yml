@@ -1,0 +1,44 @@
+---
+- name: Some more modules
+  hosts: servera.*
+  tasks:
+    - name: Verify that the auditors group exists
+      ansible.builtin.group:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - sys_admins
+        - developers
+
+    - name: Create devops_user if missing
+      ansible.builtin.user:
+        name: devops_user
+        shell: /bin/bash
+        groups: sys_admins, developers
+        append: true
+
+    - name: Create an SSH key for user1
+      ansible.builtin.user:
+        name: devops_user
+        generate_ssh_key: true
+        ssh_key_bits: 2048
+        ssh_key_file: .ssh/id_my_rsa
+
+    #- name: Copy host keys to remote servers
+    #  ansible.builtin.known_hosts:
+    #    path: /etc/ssh/{{item}}/ssh_known_hosts
+    #    name: servera
+    #    key: "{{ lookup('ansible.builtin.file', '~/.ssh/{{item}}/id_rsa.pub') }}"
+    #  loop:
+    #    - user1
+    #    - user2
+      
+    - name: Modify sudo to allow the group01 group sudo without a password
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers.d/group01
+        state: present
+        create: true
+        mode: 0440
+        line: "%group01 ALL=(ALL) NOPASSWD: ALL"
+        validate: /usr/sbin/visudo -cf %s
+

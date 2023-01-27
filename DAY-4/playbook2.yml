@@ -1,0 +1,7 @@
+---
+- name: This is playbook2
+  hosts: serverb.lab.example.com
+  tasks:
+    - name: task1
+      debug:
+        msg: this is task1 from playbook2

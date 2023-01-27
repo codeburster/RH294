@@ -1,0 +1,15 @@
+---
+- name: This play demonstrates use of file inclusion
+  hosts: servera.lab.example.com
+  tasks:
+  - name: This task includes task from a task file
+    import_tasks: tasks/task1.yml
+    vars:
+      packages: httpd
+      service: httpd
+      state: started
+    when: False 
+    register: result
+
+  - debug:
+      var: result

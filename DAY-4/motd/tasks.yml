@@ -1,0 +1,18 @@
+---
+- name: copying templates
+  template:
+    src: motd_template.j2
+    dest: /etc/motd
+    mode: 0644
+- name: Copying users file
+  template:
+    src: users.j2
+    dest: /srv/users.txt
+    mode: 0644
+  notify: restart_service
+
+- name: copying static file
+  copy:
+    src: random_file.txt
+    dest: /srv/myfile.txt
+    mode: 0644

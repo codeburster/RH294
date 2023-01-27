@@ -1,0 +1,24 @@
+---
+- name: managing storage device using Storage Role
+  hosts: serverb.*
+  vars:
+    storage_pools:
+      - name: demo-vg
+        type: lvm
+        disks:
+          - /dev/vdb
+        volumes:
+          - name: data-lv
+            size: 128m
+            mount_point: "/var/www"
+            fs_type: xfs
+            state: present
+
+          - name: lv2
+            size: 256m
+            mount_point: "/var/log/httpd"
+            fs_type: xfs
+            state: present
+        
+  roles:
+    - redhat.rhel_system_roles.storage
